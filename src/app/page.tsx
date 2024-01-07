@@ -1,5 +1,4 @@
-import { useState } from "react";
-import CreateUser from "~/components/CreateUser";
+import CreateUser from "~/components/CreateUser/CreateUser";
 import UserCard from "~/components/UserCard/UserCard";
 import { api } from "~/trpc/server";
 

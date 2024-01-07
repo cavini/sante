@@ -10,10 +10,22 @@ import { UserSchema } from "~/schemas/User";
 import { type UserCardProps } from "./@types";
 
 const UserCard = ({ user }: UserCardProps) => {
+  const { register, handleSubmit, formState } = useForm({
+    resolver: zodResolver(UserSchema),
+  });
+  const router = useRouter();
+
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [phone, setPhone] = useState(user.phone);
-  const router = useRouter();
+
+  const resetFields = () => {
+    setName(user.name);
+    setEmail(user.email);
+    setPhone(user.phone);
+  };
+
   const deleteUser = api.user.delete.useMutation({
     onSuccess: () => {
       router.refresh();
@@ -24,12 +36,6 @@ const UserCard = ({ user }: UserCardProps) => {
       throw new TRPCClientError(message);
     },
   });
-
-  const resetFields = () => {
-    setName(user.name);
-    setEmail(user.email);
-    setPhone(user.phone);
-  };
 
   const updateUser = api.user.updateUser.useMutation({
     onSuccess: () => {
@@ -42,7 +48,6 @@ const UserCard = ({ user }: UserCardProps) => {
       throw new TRPCClientError(message);
     },
   });
-  const [isEdit, setIsEdit] = useState<boolean>(false);
   const handleDelete = () => {
     deleteUser.mutate({ id: user.id });
   };
@@ -51,10 +56,6 @@ const UserCard = ({ user }: UserCardProps) => {
     resetFields();
     setIsEdit(!isEdit);
   };
-
-  const { register, handleSubmit, formState } = useForm({
-    resolver: zodResolver(UserSchema),
-  });
 
   const onSubmit = () => {
     updateUser.mutate({ name, email, phone, id: user.id });

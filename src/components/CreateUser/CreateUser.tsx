@@ -6,10 +6,8 @@ import { api } from "~/trpc/react";
 import React, { type FormEvent, useState } from "react";
 import { TRPCClientError } from "@trpc/client";
 import { toast } from "react-toastify";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { phoneRegex } from "~/utils";
 import { UserSchema } from "~/schemas/User";
 
 const CreateUser = () => {
